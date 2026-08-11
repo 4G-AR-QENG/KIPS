@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Evaluación Técnica · Línea Arquitectura · 4G</title>
+<style>
+  :root{
+    --cream:#F5F1EA;
+    --maroon:#7A1F2B;
+    --maroon-dark:#5E1620;
+    --ink:#2B2620;
+    --gray:#6B6560;
+    --line:#E4DDD1;
+    --white:#FFFFFF;
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0;}
+
+  body{
+    background:var(--cream);
+    color:var(--ink);
+    font-family:'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    padding:56px 24px 80px;
+  }
+
+  /* ---- Fondo geométrico sutil, igual espíritu que la referencia ---- */
+  .bg-grid{
+    position:fixed;
+    inset:0;
+    z-index:0;
+    pointer-events:none;
+    opacity:0.35;
+    background-image:
+      repeating-linear-gradient(0deg, transparent, transparent 79px, rgba(122,31,43,0.05) 79px, rgba(122,31,43,0.05) 80px),
+      repeating-linear-gradient(90deg, transparent, transparent 79px, rgba(122,31,43,0.05) 79px, rgba(122,31,43,0.05) 80px);
+  }
+
+  .content{
+    position:relative;
+    z-index:1;
+    width:100%;
+    max-width:900px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+  }
+
+  /* ---- Header ---- */
+  .logo-row{
+    display:flex;
+    align-items:baseline;
+    gap:14px;
+    margin-bottom:28px;
+  }
+  .logo-4g{
+    font-size:44px;
+    font-weight:800;
+    color:var(--ink);
+    letter-spacing:-1px;
+  }
+  .logo-4g span{ color:var(--maroon); }
+  .logo-sub{
+    display:flex;
+    flex-direction:column;
+    line-height:1.15;
+  }
+  .logo-sub .name{
+    font-size:15px;
+    font-weight:700;
+    letter-spacing:3px;
+    color:var(--ink);
+  }
+  .logo-sub .tag{
+    font-size:10px;
+    letter-spacing:2px;
+    color:var(--gray);
+  }
+
+  .eyebrow{
+    background:#FBEFE9;
+    border:1px solid #E9C9BC;
+    color:var(--maroon);
+    font-size:11px;
+    font-weight:700;
+    letter-spacing:1.5px;
+    padding:7px 18px;
+    border-radius:20px;
+    margin-bottom:22px;
+    text-transform:uppercase;
+  }
+
+  h1{
+    font-size:44px;
+    font-weight:800;
+    text-align:center;
+    letter-spacing:-0.5px;
+    color:var(--ink);
+    margin-bottom:16px;
+  }
+  h1 .accent{ color:var(--maroon); }
+
+  .subtitle{
+    text-align:center;
+    color:var(--gray);
+    font-size:16px;
+    max-width:560px;
+    line-height:1.55;
+    margin-bottom:34px;
+  }
+
+  /* ---- Aviso ---- */
+  .notice{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    background:var(--maroon);
+    color:var(--white);
+    border-radius:10px;
+    padding:16px 22px;
+    max-width:640px;
+    width:100%;
+    margin-bottom:48px;
+    box-shadow:0 6px 18px rgba(122,31,43,0.18);
+  }
+  .notice .icon{
+    flex-shrink:0;
+    width:22px;
+    height:22px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+  .notice p{
+    font-size:14.5px;
+    font-weight:500;
+    line-height:1.4;
+  }
+  .notice strong{ font-weight:800; }
+
+  /* ---- Tarjetas ---- */
+  .cards{
+    width:100%;
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:22px;
+  }
+
+  .card{
+    background:var(--white);
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:28px 24px 24px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    text-align:center;
+    transition:transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+  }
+  .card:hover{
+    transform:translateY(-4px);
+    box-shadow:0 14px 30px rgba(43,38,32,0.10);
+    border-color:#D8C3C6;
+  }
+
+  .card-icon{
+    width:52px;
+    height:52px;
+    border-radius:50%;
+    background:#F7EDE9;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    margin-bottom:18px;
+  }
+  .card-icon svg{ width:24px; height:24px; }
+
+  .card-role{
+    font-size:11px;
+    font-weight:700;
+    letter-spacing:1.5px;
+    color:var(--maroon);
+    text-transform:uppercase;
+    margin-bottom:8px;
+  }
+
+  .card-title{
+    font-size:19px;
+    font-weight:700;
+    color:var(--ink);
+    margin-bottom:10px;
+    line-height:1.3;
+  }
+
+  .card-desc{
+    font-size:13.5px;
+    color:var(--gray);
+    line-height:1.5;
+    margin-bottom:24px;
+    flex-grow:1;
+  }
+
+  .btn{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    width:100%;
+    background:var(--maroon);
+    color:var(--white);
+    font-size:14px;
+    font-weight:700;
+    text-decoration:none;
+    padding:13px 18px;
+    border-radius:8px;
+    transition:background 0.15s ease;
+  }
+  .btn:hover{ background:var(--maroon-dark); }
+  .btn svg{ width:16px; height:16px; }
+
+  /* ---- Footer ---- */
+  footer{
+    margin-top:56px;
+    font-size:12px;
+    color:var(--gray);
+    text-align:center;
+    letter-spacing:0.3px;
+  }
+
+  @media (max-width:760px){
+    h1{ font-size:32px; }
+    .cards{ grid-template-columns:1fr; }
+    .notice{ flex-direction:row; }
+  }
+</style>
+</head>
+<body>
+
+<div class="bg-grid"></div>
+
+<div class="content">
+
+  <div class="logo-row">
+    <div class="logo-4g">4<span>G</span></div>
+    <div class="logo-sub">
+      <span class="name">ARCHITECTURE</span>
+      <span class="tag">EXPAND YOUR LIMITS</span>
+    </div>
+  </div>
+
+  <div class="eyebrow">EVALUACIÓN TÉCNICA · LÍNEA ARQUITECTURA</div>
+
+  <h1>Evaluación <span class="accent">Técnica</span><br>Línea Arquitectura</h1>
+
+  <p class="subtitle">
+    Selecciona el rol desde el cual vas a calificar y accede directamente al formulario correspondiente.
+  </p>
+
+  <div class="notice">
+    <span class="icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="10"></circle>
+        <line x1="12" y1="8" x2="12" y2="12"></line>
+        <line x1="12" y1="16" x2="12.01" y2="16"></line>
+      </svg>
+    </span>
+    <p><strong>Recuerda:</strong> debes hacer una evaluación por cada persona que te corresponda evaluar.</p>
+  </div>
+
+  <div class="cards">
+
+    <div class="card">
+      <div class="card-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#7A1F2B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
+          <path d="M2 17l10 5 10-5"></path>
+          <path d="M2 12l10 5 10-5"></path>
+        </svg>
+      </div>
+      <div class="card-role">Responsable: Consultant</div>
+      <div class="card-title">Calificación Técnica<br>desde Consultant</div>
+      <p class="card-desc">Evalúa el desempeño técnico de las personas a tu cargo desde el rol de Consultant.</p>
+      <a class="btn" href="https://forms.cloud.microsoft/r/jhZeweq6Rw" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 11l3 3L22 4"></path>
+          <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"></path>
+        </svg>
+        Iniciar evaluación
+      </a>
+    </div>
+
+    <div class="card">
+      <div class="card-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#7A1F2B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"></path>
+          <circle cx="12" cy="7" r="4"></circle>
+        </svg>
+      </div>
+      <div class="card-role">Responsable: Job Captain</div>
+      <div class="card-title">Calificación Técnica<br>desde Job Captain</div>
+      <p class="card-desc">Evalúa el desempeño técnico de las personas a tu cargo desde el rol de Job Captain.</p>
+      <a class="btn" href="https://forms.cloud.microsoft/r/zwVqiKLt0u" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 11l3 3L22 4"></path>
+          <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"></path>
+        </svg>
+        Iniciar evaluación
+      </a>
+    </div>
+
+    <div class="card">
+      <div class="card-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#7A1F2B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="4" width="18" height="18" rx="2"></rect>
+          <line x1="16" y1="2" x2="16" y2="6"></line>
+          <line x1="8" y1="2" x2="8" y2="6"></line>
+          <line x1="3" y1="10" x2="21" y2="10"></line>
+        </svg>
+      </div>
+      <div class="card-role">Responsable: Project Manager</div>
+      <div class="card-title">Calificación Técnica<br>desde Project Manager</div>
+      <p class="card-desc">Evalúa el desempeño técnico de las personas a tu cargo desde el rol de Project Manager.</p>
+      <a class="btn" href="https://forms.cloud.microsoft/r/5S7443nrxH" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 11l3 3L22 4"></path>
+          <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"></path>
+        </svg>
+        Iniciar evaluación
+      </a>
+    </div>
+
+  </div>
+
+  <footer>Evaluación de Desempeño 180° · 4G Architecture</footer>
+
+</div>
+
+</body>
+</html>
